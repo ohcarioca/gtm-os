@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    networks:
+      - firecrawl
+
+  playwright-service:
+    image: ghcr.io/mendableai/firecrawl-playwright-service:latest
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+    networks:
+      - firecrawl
+
+  api:
+    image: ghcr.io/mendableai/firecrawl:latest
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - HOST=0.0.0.0
+      - REDIS_URL=redis://redis:6379
+      - PLAYWRIGHT_MICROSERVICE_URL=http://playwright-service:3000/scrape
+      - USE_DB_AUTHENTICATION=false
+      - BULL_AUTH_KEY=local-dev-key
+      - NUM_WORKERS_PER_QUEUE=2
+      - MAX_CPU=0.8
+      - MAX_RAM=0.8
+    depends_on:
+      - redis
+      - playwright-service
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8G
+    networks:
+      - firecrawl
+
+networks:
+  firecrawl:
+    driver: bridge
