@@ -34,8 +34,8 @@ Contas necessarias:
 ### 1. Clonar o repositorio
 
 ```bash
-git clone https://github.com/ohcarioca/gtm-agents.git
-cd gtm-agents
+git clone https://github.com/ohcarioca/gtm-os.git
+cd gtm-os
 ```
 
 ### 2. Instalar dependencias do Node.js
@@ -95,29 +95,13 @@ FIRECRAWL_URL=http://localhost:3002
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role secret` → `SUPABASE_SERVICE_ROLE_KEY`
-3. Va no **SQL Editor** e execute **cada migration em ordem**:
+3. Va no **SQL Editor** e execute o arquivo de schema:
 
 ```
 supabase/migrations/001_initial_schema.sql
-supabase/migrations/002_add_company_size_targets.sql
-supabase/migrations/003_add_lead_contact_fields.sql
-supabase/migrations/004_add_company_profiles.sql
-supabase/migrations/005_add_leads_metadata.sql
-supabase/migrations/006_add_leads_linkedin_unique_index.sql
-supabase/migrations/007_add_cancelled_status.sql
-supabase/migrations/008_add_segment_score_threshold.sql
-supabase/migrations/010_add_linkedin_usage.sql
-supabase/migrations/011_add_prospect_companies.sql
-supabase/migrations/012_remove_segment_dependency.sql
-supabase/migrations/013_add_rejected_dedup.sql
-supabase/migrations/014_add_icp_company_types.sql
-supabase/migrations/015_add_default_roles_regions.sql
-supabase/migrations/016_add_company_markdown.sql
-supabase/migrations/017_add_api_keys.sql
-supabase/migrations/018_add_company_linkedin_url.sql
 ```
 
-> **Nota:** A migration 009 nao existe (foi pulada). Execute todas as outras em ordem.
+Esse arquivo unico cria todas as tabelas, triggers, RLS policies e indexes necessarios.
 
 #### Opcao B: Supabase local (Docker)
 
@@ -316,7 +300,7 @@ claude --print "test"
 
 ### Erro de migracao no Supabase
 
-Execute as migrations em ordem no SQL Editor. A migration 009 nao existe (foi pulada). Se uma migration falhar, verifique se as anteriores foram executadas.
+Execute o arquivo `supabase/migrations/001_initial_schema.sql` no SQL Editor. Ele contem o schema completo em um unico arquivo.
 
 ### Porta 3000 ja em uso
 
