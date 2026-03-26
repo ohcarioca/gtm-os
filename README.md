@@ -298,10 +298,6 @@ claude auth login
 claude --print "test"
 ```
 
-### Erro de migracao no Supabase
-
-Execute o arquivo `supabase/migrations/001_initial_schema.sql` no SQL Editor. Ele contem o schema completo em um unico arquivo.
-
 ### Porta 3000 ja em uso
 
 ```bash
